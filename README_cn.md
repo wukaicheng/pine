@@ -2,7 +2,7 @@
 ## 简介
 Pine是一个在虚拟机层面、以Java方法为粒度的运行时动态hook框架，它可以拦截本进程内几乎所有的java方法调用。
 
-目前它支持Android 4.4（只支持ART）~ **13** 且使用 thumb-2/arm64 指令集的设备。
+目前它支持Android 4.4（只支持ART）~ **14** 且使用 thumb-2/arm64 指令集的设备。
 
 关于它的实现原理，可以参考[本文](https://canyie.github.io/2020/04/27/dynamic-hooking-framework-on-art/)。
 
@@ -138,6 +138,8 @@ private static void methodLocked() {
 }
 ```
 在这个例子里，我们更建议hook `methodLocked` 而非 `method`。
+
+- Pine 默认情况下会在初始化时禁用系统的隐藏 API 限制。系统有一个 bug，当一个线程更改隐藏 API 策略时另一个线程在列出一个类的所有成员时，系统内部可能会发生越界写并导致崩溃。我们没法修复系统 bug，所以我建议你在其他所有线程初始化之前就初始化我们的库以避免这个 race condition。更多信息请参阅 tiann/FreeReflection#60。
 
 - 更多请参见[issues](https://github.com/canyie/pine/issues)。
 

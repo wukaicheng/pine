@@ -4,7 +4,7 @@
 ## Introduction
 Pine is a dynamic java method hook framework on ART runtime, which can intercept almost all java method calls in the current process.
 
-Currently it supports Android 4.4(ART only) ~ **13** with thumb-2/arm64 architecture.
+Currently it supports Android 4.4(ART only) ~ **14** with thumb-2/arm64 architecture.
 
 About its working principle, you can refer to this Chinese [article](https://canyie.github.io/2020/04/27/dynamic-hooking-framework-on-art/).
 
@@ -130,6 +130,8 @@ private static void methodLocked() {
 }
 ```
 In the example, we recommend you to hook `methodLocked` instead of `method`.
+
+- Pine will disable hidden api policy on initialization by default. Due to an ART bug, if a thread changes hidden api policy while another thread is calling a API that lists members of a class, a out-of-bounds write may occur and causes crashes. We have no way to fix system bugs, so the only way is, initialize our library before other threads is started to avoid the race condition. For more info, see tiann/FreeReflection#60.
 
 - For more, see [issues](https://github.com/canyie/pine/issues).
 
